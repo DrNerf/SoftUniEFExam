@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9becfd7b146b4040a38e5d0ebcffc26d" Name="Diagram1">
+        <EntityTypeShape EntityType="SofUniEFExamModel.Comment" Width="1.5" PointX="8.25" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SofUniEFExamModel.Country" Width="1.5" PointX="4.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SofUniEFExamModel.Like" Width="1.5" PointX="10.375" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SofUniEFExamModel.Role" Width="1.5" PointX="7.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SofUniEFExamModel.Topic" Width="1.5" PointX="6.25" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SofUniEFExamModel.Town" Width="1.5" PointX="6.5" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SofUniEFExamModel.User" Width="1.5" PointX="10" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="SofUniEFExamModel.FK_Comments_Topics" ManuallyRouted="false" />
+        <AssociationConnector Association="SofUniEFExamModel.FK_Likes_Comments" ManuallyRouted="false" />
+        <AssociationConnector Association="SofUniEFExamModel.FK_Towns_Countries" ManuallyRouted="false" />
+        <AssociationConnector Association="SofUniEFExamModel.FK_Likes_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="SofUniEFExamModel.FK_Topics_Users" ManuallyRouted="true" >
+          <ConnectorPoint PointX="10.15625" PointY="3.6340950520833317" />
+          <ConnectorPoint PointX="10.15625" PointY="5.2503059895833335" />
+          <ConnectorPoint PointX="7.4903395060957791" PointY="5.2503059895833335" />
+          <ConnectorPoint PointX="7.4903395060957791" PointY="6.25" />
+        </AssociationConnector>
+        <AssociationConnector Association="SofUniEFExamModel.FK_Users_Towns" ManuallyRouted="false" />
+        <AssociationConnector Association="SofUniEFExamModel.UserRoles" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

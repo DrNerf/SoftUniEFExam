@@ -1,0 +1,516 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SofUniEFExamModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TopicID" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Countries">
+          <Key>
+            <PropertyRef Name="CountryID" />
+          </Key>
+          <Property Name="CountryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CountryName" Type="nvarchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Likes">
+          <Key>
+            <PropertyRef Name="LikeID" />
+          </Key>
+          <Property Name="LikeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CommentID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleType" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Topics">
+          <Key>
+            <PropertyRef Name="TopicID" />
+          </Key>
+          <Property Name="TopicID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="TopicName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="TimesSeen" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Towns">
+          <Key>
+            <PropertyRef Name="TownID" />
+          </Key>
+          <Property Name="TownID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CountryID" Type="int" Nullable="false" />
+          <Property Name="TownName" Type="nvarchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="Lastname" Type="nvarchar(max)" />
+          <Property Name="Telephone" Type="nvarchar" MaxLength="50" />
+          <Property Name="TownID" Type="int" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Comments_Topics">
+          <End Role="Topics" Type="Self.Topics" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Topics">
+              <PropertyRef Name="TopicID" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="TopicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Likes_Comments">
+          <End Role="Comments" Type="Self.Comments" Multiplicity="1" />
+          <End Role="Likes" Type="Self.Likes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comments">
+              <PropertyRef Name="CommentID" />
+            </Principal>
+            <Dependent Role="Likes">
+              <PropertyRef Name="CommentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Likes_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Likes" Type="Self.Likes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Likes">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Topics_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Topics" Type="Self.Topics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Topics">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Towns_Countries">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="Towns" Type="Self.Towns" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryID" />
+            </Principal>
+            <Dependent Role="Towns">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Towns">
+          <End Role="Towns" Type="Self.Towns" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Towns">
+              <PropertyRef Name="TownID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="TownID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SofUniEFExamModelStoreContainer">
+          <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Likes" EntityType="Self.Likes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Topics" EntityType="Self.Topics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Towns" EntityType="Self.Towns" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Comments_Topics" Association="Self.FK_Comments_Topics">
+            <End Role="Topics" EntitySet="Topics" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Likes_Comments" Association="Self.FK_Likes_Comments">
+            <End Role="Comments" EntitySet="Comments" />
+            <End Role="Likes" EntitySet="Likes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Likes_Users" Association="Self.FK_Likes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Likes" EntitySet="Likes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Topics_Users" Association="Self.FK_Topics_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Topics" EntitySet="Topics" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Towns_Countries" Association="Self.FK_Towns_Countries">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Towns" EntitySet="Towns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_Roles" Association="Self.FK_UserRoles_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_Users" Association="Self.FK_UserRoles_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Towns" Association="Self.FK_Users_Towns">
+            <End Role="Towns" EntitySet="Towns" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SofUniEFExamModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TopicID" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Topic" Relationship="Self.FK_Comments_Topics" FromRole="Comments" ToRole="Topics" />
+          <NavigationProperty Name="Likes" Relationship="Self.FK_Likes_Comments" FromRole="Comments" ToRole="Likes" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryID" />
+          </Key>
+          <Property Name="CountryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CountryName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Towns" Relationship="Self.FK_Towns_Countries" FromRole="Countries" ToRole="Towns" />
+        </EntityType>
+        <EntityType Name="Like">
+          <Key>
+            <PropertyRef Name="LikeID" />
+          </Key>
+          <Property Name="LikeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="CommentID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Comment" Relationship="Self.FK_Likes_Comments" FromRole="Likes" ToRole="Comments" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Likes_Users" FromRole="Likes" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleType" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.UserRoles" FromRole="Roles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Topic">
+          <Key>
+            <PropertyRef Name="TopicID" />
+          </Key>
+          <Property Name="TopicID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="TopicName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TimesSeen" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Topics" FromRole="Topics" ToRole="Comments" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Topics_Users" FromRole="Topics" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Town">
+          <Key>
+            <PropertyRef Name="TownID" />
+          </Key>
+          <Property Name="TownID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CountryID" Type="Int32" Nullable="false" />
+          <Property Name="TownName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Country" Relationship="Self.FK_Towns_Countries" FromRole="Towns" ToRole="Countries" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Users_Towns" FromRole="Towns" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Lastname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TownID" Type="Int32" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Likes" Relationship="Self.FK_Likes_Users" FromRole="Users" ToRole="Likes" />
+          <NavigationProperty Name="Topics" Relationship="Self.FK_Topics_Users" FromRole="Users" ToRole="Topics" />
+          <NavigationProperty Name="Town" Relationship="Self.FK_Users_Towns" FromRole="Users" ToRole="Towns" />
+          <NavigationProperty Name="Roles" Relationship="Self.UserRoles" FromRole="Users" ToRole="Roles" />
+        </EntityType>
+        <Association Name="FK_Comments_Topics">
+          <End Role="Topics" Type="Self.Topic" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Topics">
+              <PropertyRef Name="TopicID" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="TopicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Likes_Comments">
+          <End Role="Comments" Type="Self.Comment" Multiplicity="1" />
+          <End Role="Likes" Type="Self.Like" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comments">
+              <PropertyRef Name="CommentID" />
+            </Principal>
+            <Dependent Role="Likes">
+              <PropertyRef Name="CommentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Towns_Countries">
+          <End Role="Countries" Type="Self.Country" Multiplicity="1" />
+          <End Role="Towns" Type="Self.Town" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryID" />
+            </Principal>
+            <Dependent Role="Towns">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Likes_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Likes" Type="Self.Like" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Likes">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Topics_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Topics" Type="Self.Topic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Topics">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Towns">
+          <End Role="Towns" Type="Self.Town" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Towns">
+              <PropertyRef Name="TownID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="TownID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserRoles">
+          <End Role="Roles" Type="Self.Role" Multiplicity="*" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="SofUniEFExamEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="Countries" EntityType="Self.Country" />
+          <EntitySet Name="Likes" EntityType="Self.Like" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="Topics" EntityType="Self.Topic" />
+          <EntitySet Name="Towns" EntityType="Self.Town" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_Comments_Topics" Association="Self.FK_Comments_Topics">
+            <End Role="Topics" EntitySet="Topics" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Likes_Comments" Association="Self.FK_Likes_Comments">
+            <End Role="Comments" EntitySet="Comments" />
+            <End Role="Likes" EntitySet="Likes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Towns_Countries" Association="Self.FK_Towns_Countries">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Towns" EntitySet="Towns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Likes_Users" Association="Self.FK_Likes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Likes" EntitySet="Likes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Topics_Users" Association="Self.FK_Topics_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Topics" EntitySet="Topics" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Towns" Association="Self.FK_Users_Towns">
+            <End Role="Towns" EntitySet="Towns" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="UserRoles" Association="Self.UserRoles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SofUniEFExamModelStoreContainer" CdmEntityContainer="SofUniEFExamEntities">
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="SofUniEFExamModel.Comment">
+              <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+                <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="SofUniEFExamModel.Country">
+              <MappingFragment StoreEntitySet="Countries">
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Likes">
+            <EntityTypeMapping TypeName="SofUniEFExamModel.Like">
+              <MappingFragment StoreEntitySet="Likes">
+                <ScalarProperty Name="LikeID" ColumnName="LikeID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="SofUniEFExamModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="RoleType" ColumnName="RoleType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Topics">
+            <EntityTypeMapping TypeName="SofUniEFExamModel.Topic">
+              <MappingFragment StoreEntitySet="Topics">
+                <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TopicName" ColumnName="TopicName" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="TimesSeen" ColumnName="TimesSeen" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Towns">
+            <EntityTypeMapping TypeName="SofUniEFExamModel.Town">
+              <MappingFragment StoreEntitySet="Towns">
+                <ScalarProperty Name="TownID" ColumnName="TownID" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="TownName" ColumnName="TownName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SofUniEFExamModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="TownID" ColumnName="TownID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="UserRoles" TypeName="SofUniEFExamModel.UserRoles" StoreEntitySet="UserRoles">
+            <EndProperty Name="Roles">
+              <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+            </EndProperty>
+            <EndProperty Name="Users">
+              <ScalarProperty Name="UserID" ColumnName="UserID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
